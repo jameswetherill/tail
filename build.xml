@@ -1,0 +1,68 @@
+<project name="TailForEd" basedir=".">
+
+	<property name="src.dir" value="src" />
+
+	<property name="build.dir" value="build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jar" />
+	<property name="main-class" value="com.wellcare.tail.ed.Main" />
+	
+	<path id="lib.path.ref">
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+	<path id="project.class.path">
+		<pathelement location="lib/" />
+		<pathelement path="${java.class.path}/" />
+		<pathelement path="${additional.path}" />
+	</path>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/jar" />
+		<copy todir="${jar.dir}">
+            <fileset dir="." includes="**/*.properties,NTEventLogAppender.amd64.dll"/>
+        </copy>
+	</target>
+
+
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" target="1.6" source="1.6">
+			<classpath refid="project.class.path" />
+			<classpath refid="lib.path.ref" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">		    
+			<archives>
+				<zips>
+					<fileset dir="lib/" includes="**/*.jar" />
+				</zips>
+			</archives>
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+		<java jar="${jar.dir}/${ant.project.name}.jar" fork="true" />
+	</target>
+
+	<target name="clean-build" depends="clean,jar" />
+
+	<target name="main" depends="clean,run" />
+
+
+</project>
