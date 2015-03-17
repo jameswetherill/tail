@@ -4,7 +4,6 @@
 package com.wellcare.tail.ed;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;

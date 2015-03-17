@@ -6,7 +6,6 @@ package com.wellcare.tail.ed;
 import java.awt.BorderLayout;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.swing.JFrame;
 
@@ -18,7 +17,7 @@ import com.github.jankroken.commandline.OptionStyle;
  */
 public class Main {
 	private CommandArgs options;
-	private Properties applicationProps;
+	private TailProperties applicationProps;
 
 	/**
 	 * Constructor
@@ -75,7 +74,7 @@ public class Main {
 		if (options.getPropertiesFile() != null) {
 			prop = options.getPropertiesFile();
 		}
-		applicationProps = new Properties();
+		applicationProps = new TailProperties();
 		FileInputStream in = new FileInputStream(prop);
 		applicationProps.load(in);
 		in.close();
@@ -92,7 +91,7 @@ public class Main {
 	/**
 	 * @return Properties
 	 */
-	public Properties getProperties() {
+	public TailProperties getProperties() {
 		return applicationProps;
 	}
 

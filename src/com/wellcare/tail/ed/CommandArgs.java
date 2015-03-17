@@ -58,6 +58,21 @@ public class CommandArgs {
 	}
 
 	/**
+	 * @return String the file to return.
+	 */
+	public String[] getFiles() {
+		String[] files;
+		if (file.contains(",")) {
+			files = file.split(",");
+		} else {
+			files = new String[1];
+			files[0]=file;
+		}
+
+		return files;
+	}
+
+	/**
 	 * @return boolean the sendEmail to return.
 	 */
 	public boolean isSendEmail() {

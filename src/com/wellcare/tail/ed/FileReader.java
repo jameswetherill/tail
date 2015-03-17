@@ -22,7 +22,7 @@ public class FileReader {
 	private long lastlength = 0;
 
 	private Component txtarea;
-	private ReaderWorker worker;
+	private ReaderWorker[] workers;
 
 	/**
 	 * Constructor
@@ -34,8 +34,12 @@ public class FileReader {
 	}
 
 	public void startWork() {
-		worker = new ReaderWorker(main, txtarea);
-		new Thread(worker).start();
+		workers = new ReaderWorker[main.getOptions().getFiles().length];
+		for (int i = 0; i < main.getOptions().getFiles().length;i++){
+			ReaderWorker worker = new ReaderWorker(main.getOptions().getFiles()[i], main, txtarea);
+			new Thread(worker, main.getOptions().getFiles()[i]).start();
+			workers[i] = worker;		
+		}
 	}
 
 	/**
@@ -79,19 +83,19 @@ public class FileReader {
 		private Component txtarea;
 		private WriteEventToWindows writeEvent;
 		private SendEmail sendEmail;
+		private String filePath;
 
-		public ReaderWorker(Main main, Component txtarea) {
+		public ReaderWorker(String filePath, Main main, Component txtarea)
+		{
+			this.filePath = filePath;
 			this.main = main;
-			String pattern = main.getProperties().getProperty("pattern");
-			if (pattern.contains(",")) {
-				patterns = pattern.split(",");
-			} else {
-				patterns = new String[] { pattern };
-			}
+			patterns = main.getProperties().getPatterns();			
 			writeEvent = new WriteEventToWindows();
 			sendEmail = new SendEmail(main);
-			this.txtarea = txtarea;
+			this.txtarea = txtarea;			
 		}
+		
+		
 
 		/*
 		 * (non-Javadoc)
@@ -100,11 +104,14 @@ public class FileReader {
 		@Override
 		public void run() {
 			try {
-				File file = new File(main.getOptions().getFile());
+				File file = new File(filePath);
+				
 				int lineNumber = main.getOptions().getNumberLines();
 				while (running) {
+					file = checkForNewFile(file);
 					StringBuilder strBld = readFile(file, lineNumber);
 					String[] messages = strBld.toString().split("\n");
+					StringBuilder errors = new StringBuilder();
 					for (String text : messages) {
 						if (!"".equals(text)) {
 							System.out.println(text);
@@ -117,15 +124,19 @@ public class FileReader {
 									if (main.getOptions().getApplicationName() != null) {
 										writeEvent.writeEvent(text, main.getOptions().getApplicationName());
 									}
-									if (main.getOptions().isSendEmail()) {
-										sendEmail.sendMessage(text);
+									if (main.getOptions().isSendEmail())
+									{
+										errors.append("\n"+text);
 									}
 								}
 							}
 						}
 					}
+					if (main.getOptions().isSendEmail() && errors.length() > 0) {
+						sendEmail.sendMessage(errors.toString(), filePath);
+					}
 					lineNumber = -1;
-					Thread.sleep(4000);
+					Thread.sleep(main.getProperties().getPauseTime());
 				}
 				if(!running){
 					((JTextArea) txtarea).getDocument().remove(0, ((JTextArea) txtarea).getDocument().getLength());
@@ -145,6 +156,26 @@ public class FileReader {
 		public void stop(){
 			running = false;
 		}
+		
+		
+		private File checkForNewFile(File file){
+			File nf = null;			
+			File parent = file.getParentFile();
+			String fname = file.getName();
+			String name = fname.substring(0, fname.lastIndexOf("."));
+			long last = file.lastModified();
+			for(File fl:parent.listFiles()){
+				if(fl.getName().contains(name) && fl.lastModified() > last){
+					nf = fl;
+					lastlength = 0;
+				}
+			}
+			if(nf == null){
+				nf = file;
+			}
+			
+			return nf;
+		}
 
 	}
 
@@ -152,8 +183,16 @@ public class FileReader {
 	 *  void
 	 */
 	public void stop() {
-		if(worker!=null){
-			worker.stop();
+		if(workers[0]!=null){
+			workers[0].stop();
+		}
+	}
+	/**
+	 *  void
+	 */
+	public void stop(int index) {
+		if(workers[index]!=null){
+			workers[index].stop();
 		}
 	}
 }

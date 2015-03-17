@@ -26,7 +26,7 @@ public class SendEmail {
 		this.main = main;
 	}
 
-	public void sendMessage(String messText) {
+	public void sendMessage(String messText, String filePath) {
 
 		Session session = Session.getDefaultInstance(main.getProperties());
 		
@@ -35,7 +35,7 @@ public class SendEmail {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(main.getProperties().getProperty("from.email")));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(main.getProperties().getProperty("to.email")));
-			message.setSubject(main.getProperties().getProperty("subject.email"));
+			message.setSubject(main.getProperties().getProperty("subject.email") + " : " +filePath);
 			message.setText(messText);
 
 			// Send message

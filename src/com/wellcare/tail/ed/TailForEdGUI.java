@@ -114,6 +114,8 @@ public class TailForEdGUI extends JPanel implements ActionListener {
 			// Set up the file chooser.
 			if (fc == null) {
 				fc = new JFileChooser();
+				fc.setMultiSelectionEnabled(false);
+				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.setFileFilter(new MyFileFilter());
 			}
 
