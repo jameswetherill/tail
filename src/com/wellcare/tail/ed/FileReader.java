@@ -1,5 +1,5 @@
 /**
- * 
+ * Creator : James Wetherill
  */
 package com.wellcare.tail.ed;
 
@@ -15,6 +15,7 @@ import javax.swing.text.BadLocationException;
 
 /**
  * com.wellcare.tail.ed.FileReader
+ * Creator : James Wetherill
  */
 public class FileReader {
 
@@ -162,7 +163,7 @@ public class FileReader {
 			File nf = null;			
 			File parent = file.getParentFile();
 			String fname = file.getName();
-			String name = fname.substring(0, fname.lastIndexOf("."));
+			String name = fname.substring(0, fname.indexOf("."));
 			long last = file.lastModified();
 			for(File fl:parent.listFiles()){
 				if(fl.getName().contains(name) && fl.lastModified() > last){
