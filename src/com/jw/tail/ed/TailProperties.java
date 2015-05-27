@@ -1,12 +1,12 @@
 /**
  * Creator : James Wetherill
  */
-package com.wellcare.tail.ed;
+package com.jw.tail.ed;
 
 import java.util.Properties;
 
 /**
- * com.wellcare.tail.ed.TailProperties
+ * com.jw.tail.ed.TailProperties
  */
 public class TailProperties extends Properties {
 	private static final long serialVersionUID = 2271229112893720050L;
@@ -15,7 +15,11 @@ public class TailProperties extends Properties {
 		return Long.parseLong(getProperty("reader.pause.time"));
 	}
 
-	public String[] getPatterns(){
+	public String[] getPatterns() {
+	    if( getProperty("patterns.regular.expression").equals("true")){
+	        String pat = getProperty("patterns");
+	        return new String[]{pat};
+	    }
 		return getProperty("patterns").split(",");
 	}
 }

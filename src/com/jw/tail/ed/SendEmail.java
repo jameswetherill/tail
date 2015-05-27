@@ -1,7 +1,7 @@
 /**
  * Creator : James Wetherill
  */
-package com.wellcare.tail.ed;
+package com.jw.tail.ed;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -11,7 +11,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- * com.wellcare.tail.ed.SendEmail
+ * com.jw.tail.ed.SendEmail
  */
 public class SendEmail {
 

@@ -1,7 +1,7 @@
 /**
  * Creator : James Wetherill
  */
-package com.wellcare.tail.ed;
+package com.jw.tail.ed;
 
 import java.awt.BorderLayout;
 import java.io.FileInputStream;
@@ -13,7 +13,7 @@ import com.github.jankroken.commandline.CommandLineParser;
 import com.github.jankroken.commandline.OptionStyle;
 
 /**
- * com.wellcare.tail.ed.Main
+ * com.jw.tail.ed.Main
  */
 public class Main {
 	private CommandArgs options;

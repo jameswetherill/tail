@@ -1,7 +1,7 @@
 /**
  * Creator : James Wetherill
  */
-package com.wellcare.tail.ed;
+package com.jw.tail.ed;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import org.apache.log4j.PatternLayout;
 import org.apache.log4j.nt.NTEventLogAppender;
 
 /**
- * com.wellcare.tail.ed.WriteEventToWindows
+ * com.jw.tail.ed.WriteEventToWindows
  */
 public class WriteEventToWindows {
 

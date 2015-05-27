@@ -1,7 +1,7 @@
 /**
  * Creator : James Wetherill
  */
-package com.wellcare.tail.ed;
+package com.jw.tail.ed;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 
 /**
- * com.wellcare.tail.ed.TailForEdGUI
+ * com.jw.tail.ed.TailForEdGUI
  */
 public class TailForEdGUI extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -3629941745008250496L;
@@ -34,6 +34,7 @@ public class TailForEdGUI extends JPanel implements ActionListener {
 	private JButton stop;
 	private JCheckBox email;
 	private FileReader reader;
+	private JTextField patternField;
 
 	/**
 	 * Constructor
@@ -61,7 +62,11 @@ public class TailForEdGUI extends JPanel implements ActionListener {
 		textArea.setEditable(false);
 		JLabel fileChooserLabel = new JLabel("File");
 		fileNameField = new JTextField(40);
-
+		
+		JLabel patternLabel = new JLabel("Pattern");
+		patternField = new JTextField(40);
+		patternField.setText(main.getProperties().getProperty("patterns"));
+		patternField.setToolTipText("Pattern can be a comma seperated text or a single phrase");
 		fileDialog = new JButton("Select File");
 		fileDialog.addActionListener(this);
 
@@ -84,9 +89,9 @@ public class TailForEdGUI extends JPanel implements ActionListener {
 		layout2.setAutoCreateGaps(true);
 		layout2.setAutoCreateContainerGaps(true);
 
-		layout2.setHorizontalGroup(layout2.createSequentialGroup().addGroup(layout2.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(email).addComponent(fileChooserLabel)).addComponent(fileNameField).addComponent(fileDialog));
+		layout2.setHorizontalGroup(layout2.createParallelGroup().addGroup(layout2.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(email)).addGroup(layout2.createSequentialGroup().addComponent(fileChooserLabel).addComponent(fileNameField).addComponent(fileDialog)).addGroup(layout2.createSequentialGroup().addComponent(patternLabel).addComponent(patternField)));
 
-		layout2.setVerticalGroup(layout2.createSequentialGroup().addComponent(email).addGroup(layout2.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(fileChooserLabel).addComponent(fileNameField).addComponent(fileDialog)));
+		layout2.setVerticalGroup(layout2.createSequentialGroup().addComponent(email).addGroup(layout2.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(fileChooserLabel).addComponent(fileNameField).addComponent(fileDialog)).addGroup(layout2.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(patternLabel).addComponent(patternField)));
 
 		JPanel bottom = new JPanel();
 		GroupLayout layout3 = new GroupLayout(bottom);
@@ -139,6 +144,14 @@ public class TailForEdGUI extends JPanel implements ActionListener {
 			if (reader == null) {
 				reader = new FileReader(main, textArea);
 			}
+			if(patternField.getText() != null && !"".equals(patternField.getText())){
+                main.getProperties().setProperty("patterns", patternField.getText());
+			    if(patternField.getText().contains("[") && patternField.getText().contains("]") ){
+	                main.getProperties().setProperty("patterns.regular.expression", "true");
+			    }
+			    
+			}
+			
 			execute.setEnabled(false);
 			stop.setEnabled(true);
 			reader.startWork();

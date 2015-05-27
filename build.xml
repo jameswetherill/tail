@@ -5,7 +5,7 @@
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="jar.dir" value="${build.dir}/jar" />
-	<property name="main-class" value="com.wellcare.tail.ed.Main" />
+	<property name="main-class" value="com.jw.tail.ed.Main" />
 	
 	<path id="lib.path.ref">
 		<fileset dir="lib" includes="*.jar" />

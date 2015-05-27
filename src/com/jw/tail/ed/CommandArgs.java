@@ -1,7 +1,7 @@
 /**
  * Creator : James Wetherill
  */
-package com.wellcare.tail.ed;
+package com.jw.tail.ed;
 
 import com.github.jankroken.commandline.annotations.LongSwitch;
 import com.github.jankroken.commandline.annotations.Option;
@@ -10,7 +10,7 @@ import com.github.jankroken.commandline.annotations.SingleArgument;
 import com.github.jankroken.commandline.annotations.Toggle;
 
 /**
- * com.wellcare.tail.ed.CommandArgs
+ * com.jw.tail.ed.CommandArgs
  */
 public class CommandArgs {
 
@@ -99,7 +99,7 @@ public class CommandArgs {
 				+ "\n\t The pattern can be a comma seperated list of several values. The log files can be single or rolling files. \n\t The user can use the gui which will"
 				+ " accommodate only one file usage, \n\t good for checking that the pattern that they use to find information is ok."
 				+ "\n\n\t For support or suggestions please contact James Wetherill");
-		bu.append("\n\nThe usage is: java com.wellcare.tail.ed.Main (-f, -filename) <filename> (-g -gui) (-s -sendmail) (-p -properties) (-a -application)");
+		bu.append("\n\nThe usage is: java com.jw.tail.ed.Main (-f, -filename) <filename> (-g -gui) (-s -sendmail) (-p -properties) (-a -application)");
 		bu.append("\n   (-f, -filename) <filename> include path example C:/temp/test.log. \n\t Filename is manditory if no GUI is shown.  \n\t Multiple file names cane be used in a comma seperated list."
 				+ "\n\t This can also be multiple files (comma seperated list) like C:/temp/test.log,C:/temp/test.l");
 		bu.append("\n\t If GUI is shown then the file can be selected from it.");

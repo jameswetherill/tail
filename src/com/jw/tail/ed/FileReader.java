@@ -1,7 +1,7 @@
 /**
  * Creator : James Wetherill
  */
-package com.wellcare.tail.ed;
+package com.jw.tail.ed;
 
 import java.awt.Component;
 import java.io.File;
@@ -14,7 +14,7 @@ import javax.swing.text.BadLocationException;
 
 
 /**
- * com.wellcare.tail.ed.FileReader
+ * com.jw.tail.ed.FileReader
  * Creator : James Wetherill
  */
 public class FileReader {
@@ -116,19 +116,11 @@ public class FileReader {
 					for (String text : messages) {
 						if (!"".equals(text)) {
 							System.out.println(text);
-							for (String pattern : patterns) {
-								if (text.contains(pattern)) {
-									if (txtarea != null) {
-										((JTextArea) txtarea).append(text + "\n\r");
-										((JTextArea) txtarea).setCaretPosition(((JTextArea) txtarea).getDocument().getLength());
-									}
-									if (main.getOptions().getApplicationName() != null) {
-										writeEvent.writeEvent(text, main.getOptions().getApplicationName());
-									}
-									if (main.getOptions().isSendEmail())
-									{
-										errors.append("\n"+text);
-									}
+							for (String pattern : patterns) {							    
+								if (text.contains(pattern) ) {
+								    setText(text, errors);
+								} else if(main.getProperties().get("patterns.regular.expression").equals("true") && text.matches(pattern)){
+                                    setText(text, errors);
 								}
 							}
 						}
@@ -152,6 +144,20 @@ public class FileReader {
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		private void setText(String text, StringBuilder errors) throws IOException{
+		    if (txtarea != null) {
+                ((JTextArea) txtarea).append(text + "\n\r");
+                ((JTextArea) txtarea).setCaretPosition(((JTextArea) txtarea).getDocument().getLength());
+            }
+            if (main.getOptions().getApplicationName() != null) {
+                writeEvent.writeEvent(text, main.getOptions().getApplicationName());
+            }
+            if (main.getOptions().isSendEmail())
+            {
+                errors.append("\n"+text);
+            }
 		}
 		
 		public void stop(){
